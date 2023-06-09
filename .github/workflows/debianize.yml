@@ -6,7 +6,7 @@ jobs:
   debianize-lxd:
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -55,10 +55,10 @@ jobs:
           echo SOURCE_VERSION=${SOURCE_VERSION} >> $GITHUB_ENV
 
           echo -n "$SIGNING_KEY" | base64 --decode | gpg --import
-          echo "FB192EEBA97E216FBC5CA6E8AE8977855A7038D6:6:" > ownertrust
+          echo "9C52118F1F982CED231CE6CE46C468585E4A8B6D:6:" > ownertrust
           gpg --import-ownertrust ownertrust
 
-          debuild -d --no-tgz-check -kFB192EEBA97E216FBC5CA6E8AE8977855A7038D6 -S
+          debuild -d --no-tgz-check -k9C52118F1F982CED231CE6CE46C468585E4A8B6D -S
 
           cp ../lxd_${SOURCE_VERSION}.tar.xz ../lxd_${SOURCE_VERSION}.orig.tar.xz
           cp ../lxd_${SOURCE_VERSION}.tar.xz .
@@ -83,11 +83,11 @@ jobs:
       - name: publish package to ppa
         if: github.ref == 'refs/heads/master'
         run: |
-          echo "[lxd-ppa]" >> ~/.dput.cf
+          echo "[thekev-ppa]" >> ~/.dput.cf
           echo "fqdn = ppa.launchpad.net" >> ~/.dput.cf
           echo "method = ftp" >> ~/.dput.cf
-          echo "incoming = ~randombenj/ubuntu/lxd/" >> ~/.dput.cf
+          echo "incoming = ~thekev./ubuntu/ppa/" >> ~/.dput.cf
           echo "login = anonymous" >> ~/.dput.cf
           echo "allow_unsigned_uploads = 0" >> ~/.dput.cf
 
-          dput ppa:randombenj/lxd ../lxd_*.changes
+          dput ppa:thekev./ppa ../lxd_*.changes
