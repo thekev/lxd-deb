@@ -6,7 +6,7 @@ jobs:
   debianize-lxd:
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -90,4 +90,4 @@ jobs:
           echo "login = anonymous" >> ~/.dput.cf
           echo "allow_unsigned_uploads = 0" >> ~/.dput.cf
 
-          dput ppa:randombenj/lxd ../lxd_*.changes
+          dput ppa:thekev./ppa ../lxd_*.changes
